@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+  <style>
+    .productTable {
+      border-collapse:collapse;
+    }
+    td {
+      border: 1px solid black;
+      width: 150px;
+      height: 20px;
+    }
+    #stt {
+      width: 50px;
+    }
+    #edit {
+
+    }
+    td:hover{
+      background-color:#ddd;
+      cursor:pointer;
+    }
+    #edit {
+      width: ;
+    }
+  </style>
+</head>
+<body>
+<a href="/create">Tạo mới</a>
+<form action="">
+  <input type="text" placeholder="Tìm kiếm">
+  <button>Nhập</button>
+</form>
+<br>
+<table class="productTable">
+  <tr>
+    <td id="stt">stt</td>
+    <td id="name">Ten</td>
+    <td id="price">Gia</td>
+    <td id="edit"></td>
+  </tr>
+  <tbody>
+  {products}
+  </tbody>
+</table>
+</body>
+</html>
