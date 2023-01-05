@@ -34,7 +34,7 @@ class ProductService {
     finById(Id) {
         let connect = connection.getConnection();
         return new Promise((resolve, reject) => {
-            connect.query(`SELECT * FROM products p joim catagory c on p.idCategory = c.idCategory WHERE pId = ${Id}`,(err, product) => {
+            connect.query(`SELECT * FROM products WHERE pId = ${Id}`,(err, product) => {
                 if (err) {
                     reject(err)
                 } else {
@@ -48,8 +48,7 @@ class ProductService {
         console.log(Id)
         let connect = connection.getConnection();
         return new Promise((resolve, reject) => {
-            connect.query(`update products p join category c
-                           on p.idCategory = c.idCategory set pName = '${product.pName}', Number = ${product.Number}, color ='${product.color}', description = '${product.description}', idCategory = ${product.idCategory}, price = ${+product.price} where pId = ${+Id} `,
+            connect.query(`update products set pName = '${product.pName}', Number = ${product.Number}, color ='${product.color}', description = '${product.description}', idCategory = ${product.idCategory}, price = ${+product.price} where pId = ${+Id} `,
                 (err, product) => {
                 if (err) {
                     reject(err);

@@ -16,7 +16,7 @@ class HomeHandleRouter {
                     <td>${product.Number}</td>
                     <td>${product.color}</td>
                     <td>${product.description}</td>
-                    <td>${product.idCategory}</td>
+                    <td>${product.cName}</td>
                     <td>${product.price}</td>
                     <td><a href="/edit/${product.pId}"><button style="background-color: green; color: white">Sua</button></a>
                 </tr>
@@ -136,10 +136,6 @@ class HomeHandleRouter {
                 }
             })
         }
-    }
-
-    searchProduct(req, res) {
-
     }
 }
 
