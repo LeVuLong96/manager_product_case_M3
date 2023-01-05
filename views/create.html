@@ -5,12 +5,14 @@
   <title>Create</title>
 </head>
 <body>
-<h1>Thm sản phẩm</h1>
+<h1>Thêm sản phẩm</h1>
 <form action="/create" method="post">
-  <label>Tên:<input type="text" name="name" placeholder="tên"></label><br>
-  <label>giá<input type="text" name="price"></label><br>
-  <label>mô tả<input type="text" name="description"></label><br>
-
+  <label>Tên:<input type="text" name="pName" placeholder="Tên sản phẩm"></label><br>
+  <label>Số lượng:<input type="number" name="Number" placeholder="Số lượng"></label><br>
+  <label>Màu sắc:<input type="text" name="color" placeholder="Màu"></label><br>
+  <label>mô tả:<input type="text" name="description" placeholder="Mô tả"></label><br>
+  <label>Danh mục:<input type="number" name="idCategory" placeholder="Danh mục"></label><br>
+  <label>Giá:<input type="number" name="price" placeholder="Giá sản phẩm"></label><br>
 
   <button type="submit">Thêm mới</button>
 </form>

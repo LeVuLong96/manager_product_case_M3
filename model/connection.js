@@ -6,7 +6,7 @@ class Connection {
         user: 'root',
         password: 'thienma1',
         charset: 'utf8_general_ci',
-        database: 'manager'
+        database: 'manager_product'
     }
 
     getConnection() {

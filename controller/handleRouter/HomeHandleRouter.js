@@ -10,10 +10,13 @@ class HomeHandleRouter {
             tbody += `
                     <tr>
                     <td>${index + 1}</td>
-                    <td>${product.name}</td>
+                    <td>${product.pName}</td>
+                    <td>${product.Number}</td>
+                    <td>${product.color}</td>
+                    <td>${product.description}</td>
+                    <td>${product.idCategory}</td>
                     <td>${product.price}</td>
-                    <td><a href="/edit/${product.id}"><button style="background-color: green; color: white">Sua</button></a>
-                    <a href="/delete/${product.id}"><button style="background-color: red; color: white">Xoa</button></a></td>
+                    <td><a href="/edit/${product.pId}"><button style="background-color: green; color: white">Sua</button></a>
                 </tr>
                     `
         })
@@ -22,17 +25,46 @@ class HomeHandleRouter {
     }
 
     showHome(req, res) {
-        fs.readFile('./views/home.html', 'utf-8', async (err, homeHtml) => {
-            if (err) {
-                console.log(err.message)
-            } else {
-                let products = await productService.findAll()
-                homeHtml = HomeHandleRouter.getHomeHtml(homeHtml, products);
-                res.writeHead(200, 'text/html');
-                res.write(homeHtml);
-                res.end();
-            }
-        })
+        if (req.method === 'GET') {
+            fs.readFile('./views/home.html', 'utf-8', async (err, homeHtml) => {
+                if (err) {
+                    console.log(err.message)
+                } else {
+                    let products = await productService.findAll()
+                    homeHtml = HomeHandleRouter.getHomeHtml(homeHtml, products);
+                    res.writeHead(200, 'text/html');
+                    res.write(homeHtml);
+                    res.end();
+                }
+            })
+        }
+        else {
+            let data = '';
+            req.on('data', chunk => {
+                data += chunk;
+            })
+            req.on('end', async err => {
+                if (err) {
+                    console.log(err)
+                } else {
+                    let search = qs.parse(data);
+                    fs.readFile('./views/home.html', 'utf-8', async (err, indexHtml) => {
+                        if (err) {
+                            console.log(err)
+                        } else {
+
+                            let product = await productService.searchProduct(search.search)
+                            console.log(product)
+                            indexHtml = HomeHandleRouter.getHomeHtml(indexHtml, product)
+                            res.writeHead(200, 'text/html');
+                            res.write(indexHtml);
+                            res.end();
+                        }
+                    })
+                }
+            })
+
+        }
     }
 
     createProduct(req, res) {
@@ -56,7 +88,7 @@ class HomeHandleRouter {
                     console.log(err)
                 } else {
                     const product = qs.parse(data);
-                    const mess = await productService.save(product);
+                    const mess = await productService.add(product);
                     console.log(mess)
                     res.writeHead(301, {'location': '/home'});
                     res.end();
@@ -65,35 +97,21 @@ class HomeHandleRouter {
         }
     }
 
-    async deleteProduct(req, res, id) {
-        if (req.method === 'GET') {
-            fs.readFile('./views/delete.html', 'utf-8', (err, deleteHtml) => {
-                if (err) {
-                    console.log(err.message)
-                } else {
-                    res.writeHead(200, 'text/html');
-                    deleteHtml = deleteHtml.replace('{id}', id);
-                    res.write(deleteHtml);
-                    res.end();
-                }
-            })
-        } else {
-            let mess = await productService.deleteProduct(id)
-            res.writeHead(301, {'location': '/home'});
-            res.end();
-        }
-    }
-
-    async editProduct(req, res, id) {
+    async editProduct(req, res, Id) {
         if (req.method === 'GET') {
             fs.readFile('./views/edit.html', 'utf-8', async (err, editHtml) => {
                 if (err) {
                     console.log(err.message)
                 } else {
-                    let product = await productService.finById(id)
-                    editHtml = editHtml.replace('{name}', product[0].name);
-                    editHtml = editHtml.replace('{price}', product[0].price);
+                    let product = await productService.finById(Id)
+                    editHtml = editHtml.replace('{pName}', product[0].pName);
+                    editHtml = editHtml.replace('{Number}', product[0].Number);
+                    editHtml = editHtml.replace('{color}', product[0].color);
                     editHtml = editHtml.replace('{description}', product[0].description);
+                    editHtml = editHtml.replace('{category}', product[0].idCategory);
+                    editHtml = editHtml.replace('{price}', product[0].price);
+                    editHtml = editHtml.replace('{pId}', product[0].pId);
+
                     res.writeHead(200, 'text/html');
                     res.write(editHtml);
                     res.end();
@@ -109,13 +127,16 @@ class HomeHandleRouter {
                     console.log(err)
                 } else {
                     const product = qs.parse(editData);
-                    // console.log(product)
-                    const mess = await productService.editProduct(product, id);
+                    const mess = await productService.editProduct(product, Id);
                     res.writeHead(301, {'location': '/home'});
                     res.end();
                 }
             })
         }
+    }
+
+    searchProduct(req, res) {
+
     }
 }
 

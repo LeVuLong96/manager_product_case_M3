@@ -1,0 +1,26 @@
+{
+  "name": "src",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "nodemon ./src/server.js"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeVuLong96/CRUD_server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LeVuLong96/CRUD_server/issues"
+  },
+  "homepage": "https://github.com/LeVuLong96/CRUD_server#readme",
+  "dependencies": {
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.20",
+    "qs": "^6.11.0"
+  }
+}
