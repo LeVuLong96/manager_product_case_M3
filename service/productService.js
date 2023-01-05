@@ -2,10 +2,10 @@ const connection = require('../model/connection');
 connection.connected();
 
 class ProductService {
-    findAll() {
+    findAll()   {
         let connect = connection.getConnection();
         return new Promise((resolve, reject) => {
-            connect.query('select * from products', (err, products) => {
+            connect.query('select * from products p join category c on p.idCategory = c.idCategory', (err, products) => {
                 if (err) {
                     reject(err)
                 } else {
@@ -34,7 +34,7 @@ class ProductService {
     finById(Id) {
         let connect = connection.getConnection();
         return new Promise((resolve, reject) => {
-            connect.query(`SELECT * FROM products WHERE pId = ${Id}`,(err, product) => {
+            connect.query(`SELECT * FROM products p joim catagory c on p.idCategory = c.idCategory WHERE pId = ${Id}`,(err, product) => {
                 if (err) {
                     reject(err)
                 } else {
@@ -48,7 +48,8 @@ class ProductService {
         console.log(Id)
         let connect = connection.getConnection();
         return new Promise((resolve, reject) => {
-            connect.query(`update products set pName = '${product.pName}', Number = ${product.Number}, color ='${product.color}', description = '${product.description}', idCategory = ${product.idCategory}, price = ${+product.price} where pId = ${+Id} `,
+            connect.query(`update products p join category c
+                           on p.idCategory = c.idCategory set pName = '${product.pName}', Number = ${product.Number}, color ='${product.color}', description = '${product.description}', idCategory = ${product.idCategory}, price = ${+product.price} where pId = ${+Id} `,
                 (err, product) => {
                 if (err) {
                     reject(err);
@@ -60,27 +61,10 @@ class ProductService {
         })
     }
 
-    // findByName(name) {
-    //     let connect = connection.getConnection();
-    //     let sql = `select *
-    //                from products p
-    //                         join category c on  c.idCategory = p.idCategory
-    //                where pName like '%${name}%'`;
-    //     return new Promise((resolve, reject) => {
-    //         connect.query(sql, (err, list) => {
-    //             if (err) {
-    //                 reject(err)
-    //             } else {
-    //                 console.log('Success');
-    //                 resolve(list);
-    //             }
-    //         })
-    //     })
-    // }
-
-    searchProduct(product){
+    searchProduct(nameProduct){
+        // console.log(nameProduct)
         let connect = connection.getConnection();
-        let sql = `select * from  product p join category c on p.idCategory = c.idCategory where nameCategory like '%${product}%'`
+        let sql = `select * from  products p join category c on p.idCategory = c.idCategory where pName like '%${nameProduct}%'`
         return new Promise((resolve, reject) => {
             connect.query(sql, (err, list) => {
                 if (err) {
@@ -91,6 +75,7 @@ class ProductService {
             })
         })
     }
+
 }
 
 const productService = new ProductService();

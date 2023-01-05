@@ -1,5 +1,7 @@
 const fs = require('fs');
 const productService = require('../../service/productService');
+const categoryService = require('../../service/categoryService');
+
 const qs = require('qs');
 const {raw} = require("mysql");
 
@@ -48,13 +50,14 @@ class HomeHandleRouter {
                     console.log(err)
                 } else {
                     let search = qs.parse(data);
+                    // console.log(search)
                     fs.readFile('./views/home.html', 'utf-8', async (err, indexHtml) => {
                         if (err) {
                             console.log(err)
                         } else {
 
-                            let product = await productService.searchProduct(search.search)
-                            console.log(product)
+                            let product = await productService.searchProduct(search.pName)
+
                             indexHtml = HomeHandleRouter.getHomeHtml(indexHtml, product)
                             res.writeHead(200, 'text/html');
                             res.write(indexHtml);
